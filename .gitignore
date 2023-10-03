@@ -1,3 +1,5 @@
 .idea/*
 docker/storage/*
-!docker/storage/services_db/*
+
+
+!docker/storage/mysql/services_db/*
