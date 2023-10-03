@@ -34,10 +34,41 @@ if ($mysqli->select_db('services_db') === false) {
     $sql = "CREATE DATABASE services_db";
     if ($mysqli->query($sql) === TRUE) {
         echo "Database created successfully";
+
     } else {
         echo "Error creating database: " . $mysqli->error;
     }
 }
 else{
+        $sql = "CREATE TABLE IF NOT EXISTS services (
+                    Ref varchar(10) NOT NULL PRIMARY KEY,
+                    Centre varchar(255) NOT NULL,
+                    Service varchar(255) NOT NULL,
+                    Country varchar(2) NOT NULL
+                );";
+        if ($mysqli->query($sql) === TRUE) {
+            echo "Table created successfully";
+        }
     echo "database already exists";
+}
+
+
+// Add rows
+$mysqli->query('insert into services VALUES ("APPLAB1","Aperture Science", "Portal Technology", "fr");');
+$mysqli->query('insert into services VALUES ("BMELAB1", "Black Mesa", "Interdimensional Travel", "de");');
+$mysqli->query('insert into services VALUES ("BMELAB2", "Black Mesa", "Interdimensional Travel", "DE");');
+$mysqli->query('insert into services VALUES ("WEYLAB1", "Weyland Yutani Research", "Xeno-biology", "gb");');
+$mysqli->query('insert into services VALUES ("BLULAB3", "Blue Sun R&D", "Behaviour Modification", "cz");');
+$mysqli->query('insert into services VALUES ("TYRLAB2","Tyrell Research","Synthetic Consciousness","GB");');
+
+
+$result =  $mysqli->query("SELECT * FROM services");
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+        echo "<br>id: " . $row["Ref"]. " - Name: " . $row["Centre"]. " Service: " . $row["Service"]. "<br>";
+    }
+} else {
+    echo "0 results";
 }
