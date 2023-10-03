@@ -1,2 +1,3 @@
 .idea/*
 docker/storage/*
+!docker/storage/services_db/*
