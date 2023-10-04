@@ -8,6 +8,8 @@ try{
     $db->query("use services_db");
 }
 catch(\PDOException $e){
+    // failed to establish connection to database
+    http_response_code(500);
     throw new \PDOException($e->getMessage());
 }
 

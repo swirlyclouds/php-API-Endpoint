@@ -23,7 +23,6 @@ services:
     image: mysql:8.0
     volumes:
       - ./storage/mysql:/var/lib/mysql
-      - ./storage/preload:/sqldata
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
