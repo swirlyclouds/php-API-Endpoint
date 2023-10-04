@@ -64,7 +64,7 @@ function showUser(str) {
 
 <form>
 <select name="users" onchange="showUser(this.value)">
-  <option value="">Select a person:</option>
+  <option value="">Select a country code:</option>
   <option value="de">de</option>
   <option value="cz">cz</option>
   <option value="fr">fr</option>

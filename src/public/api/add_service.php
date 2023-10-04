@@ -7,7 +7,9 @@ if (isset($resp->Ref) and isset($resp->Service) and isset($resp->Country) and is
     try {
         $mysqli = new mysqli('db', "root", "root");
     } catch (\Exception $e) {
+        http_response_code(500);
         echo $e->getMessage(), PHP_EOL;
+        exit(1);
     }
     $mysqli->select_db("services_db");
 
