@@ -1,7 +1,4 @@
 <?php
-
-echo file_get_contents('php://input');
-
 $resp = json_decode(file_get_contents('php://input'));
 
 
@@ -20,13 +17,13 @@ if (isset($resp->Ref) and isset($resp->Service) and isset($resp->Country) and is
         echo "Data inserted successfully";
     }
     else{
-        echo "Error inserting row: " . $mysqli->error;
         http_response_code(400);
+        echo "Error inserting row: " . $mysqli->error;
         exit(1);
     }
 }
 else{
-    echo "fail";
     http_response_code(400);
+    echo "missing parameters from POST request";
     exit(1);
 }
