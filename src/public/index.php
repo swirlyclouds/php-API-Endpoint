@@ -1,75 +1,40 @@
 <?php
 
-try {
-    $mysqli = new mysqli('db', "root", "root");
-} catch (\Exception $e) {
-    echo $e->getMessage(), PHP_EOL;
+try{
+    // connect to SQL database as root user
+    $db = new PDO('mysql:host=db','root','root');
+    // Make sure database for services is available and active
+    $db->query("CREATE DATABASE IF NOT EXISTS services_db");
+    $db->query("use services_db");
+}
+catch(\PDOException $e){
+    throw new \PDOException($e->getMessage());
 }
 
-if ($mysqli->connect_errno) {
-    printf("Connect failed: %s\n", $mysqli->connect_error);
-    exit();
-}
+// Ensure table exists
 
+$sql = "CREATE TABLE IF NOT EXISTS services (
+    Ref char(7) NOT NULL PRIMARY KEY,
+    Centre varchar(255) NOT NULL,
+    Service varchar(255) NOT NULL,
+    Country char(2) NOT NULL
+);";
 
-if ($mysqli->select_db('services_db') === false) {
-    // Create db
-    $sql = "CREATE DATABASE services_db";
-    if ($mysqli->query($sql) === TRUE) {
-        echo "Database created successfully";
+// Add all data from services.csv to database if not already in database
 
-    } else {
-        echo "Error creating database: " . $mysqli->error;
+if(($handle = fopen("services.csv", "r")) !== FALSE) {
+    $n = 0;
+    while(($row = fgetcsv($handle))!== FALSE) {
+
+        if($n > 0){
+            $stmt = $db->prepare("SELECT * FROM services WHERE Ref=:reference");
+            $stmt->bindValue(":reference", $row[0]);
+            $stmt->execute();
+            
+            if($stmt->rowCount() == 0){
+                $db->prepare('INSERT INTO services_2 VALUES ("'.$row[0].'","'.$row[1].'", "'.$row[2].'","'.$row[3].'")')->execute();
+            }
+        }
+        $n += 1;
     }
 }
-$sql = "CREATE TABLE IF NOT EXISTS services (
-            Ref varchar(10) NOT NULL PRIMARY KEY,
-            Centre varchar(255) NOT NULL,
-            Service varchar(255) NOT NULL,
-            Country varchar(2) NOT NULL
-    );";
-if ($mysqli->query($sql) === TRUE) {
-    echo "Table created successfully";
-}
-
-
-// Add rows
-$mysqli->query('insert into services VALUES ("APPLAB1","Aperture Science", "Portal Technology", "fr");');
-$mysqli->query('insert into services VALUES ("BMELAB1", "Black Mesa", "Interdimensional Travel", "de");');
-$mysqli->query('insert into services VALUES ("BMELAB2", "Black Mesa", "Interdimensional Travel", "DE");');
-$mysqli->query('insert into services VALUES ("WEYLAB1", "Weyland Yutani Research", "Xeno-biology", "gb");');
-$mysqli->query('insert into services VALUES ("BLULAB3", "Blue Sun R&D", "Behaviour Modification", "cz");');
-$mysqli->query('insert into services VALUES ("TYRLAB2","Tyrell Research","Synthetic Consciousness","GB");');
-
-?>
-
-<html>
-<script>
-function showUser(str) {
-  if (str == "") {
-    document.getElementById("txtHint").innerHTML = "";
-    return;
-  } else {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("txtHint").innerHTML = this.responseText;
-      }
-    };
-    xmlhttp.open("GET","getcountry.php?q="+str,true);
-    xmlhttp.send();
-  }
-}
-</script>
-
-<form>
-<select name="users" onchange="showUser(this.value)">
-  <option value="">Select a country code:</option>
-  <option value="de">de</option>
-  <option value="cz">cz</option>
-  <option value="fr">fr</option>
-  <option value="gb">gb</option>
-  </select>
-</form>
-<div id="txtHint"><b>Info will be listed here...</b></div>
-</html>

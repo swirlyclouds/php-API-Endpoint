@@ -1,30 +1,22 @@
 <?php
-
-$q = strval($_GET['q']);
-
-$con = mysqli_connect('db','root','root');
-if (!$con) {
-  die('Could not connect: ' . mysqli_error($con));
-  echo "error";
-  exit();
+try{
+  $db = new PDO('mysql:host=db;dbname=services_db','root','root');
+}
+catch(\PDOException $e){
+  throw new \PDOException($e->getMessage(), (int) $e->getCode());
 }
 
-mysqli_select_db($con,"services_db");
-$sql="SELECT * FROM services WHERE Country = '".$q."'";
-$result = mysqli_query($con,$sql);
-$payload = [];
-while($row = mysqli_fetch_array($result)) {
-    $data = array(
-        "Ref"=>$row['Ref'],
-        "Centre"=>$row['Centre'],
-        "Service"=>$row['Service'],
-        "Country"=>$row['Country']
-    );
-    $payload[] = $data;
-  }
+if(!isset($_GET['country_code'])){
+  http_response_code(400);
+  echo "no country code provided";
+  exit();
+}
+$country = $_GET['country_code'];
 
+$query = 'SELECT * FROM services WHERE Country = :country';
+$stmt = $db->prepare($query);
+$stmt->bindValue(':country', $country);
+$stmt->execute();
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 header('Content-Type: application/json; charset=utf-8');
-echo json_encode($payload);
-
-mysqli_close($con);
-exit();
+echo json_encode($results);
