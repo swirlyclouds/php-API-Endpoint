@@ -1,21 +1,4 @@
 <?php
-//$con = mysqli_connect('db','root','root');
-//
-//mysqli_select_db($con,"services_db");
-//$sql = "SELECT * FROM services";
-//$result =  mysqli_query($con,$sql);
-//
-//$payload = [];
-//
-//while($row = mysqli_fetch_array($result)) {
-//    $data = array("Ref"=>$row['Ref'], "Centre" => $row['Centre'], "Service" => $row['Service'], "Country" => $row['Country']);
-//    header("Content-Type: application/json");
-//    $payload[] = $data;
-//}
-//
-//echo json_encode($payload);
-//mysqli_close($con);
-//exit();
 
 try {
     $mysqli = new mysqli('db', "root", "root");
@@ -61,20 +44,6 @@ $mysqli->query('insert into services VALUES ("WEYLAB1", "Weyland Yutani Research
 $mysqli->query('insert into services VALUES ("BLULAB3", "Blue Sun R&D", "Behaviour Modification", "cz");');
 $mysqli->query('insert into services VALUES ("TYRLAB2","Tyrell Research","Synthetic Consciousness","GB");');
 
-
-$result =  $mysqli->query("SELECT * FROM services");
-
-if ($result->num_rows > 0) {
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
-        echo "<br>id: " . $row["Ref"]. " - Name: " . $row["Centre"]. " Service: " . $row["Service"]. "<br>";
-    }
-} else {
-    echo "0 results";
-<<<<<<< HEAD
-}
-=======
-}
 ?>
 
 <html>
@@ -90,7 +59,7 @@ function showUser(str) {
         document.getElementById("txtHint").innerHTML = this.responseText;
       }
     };
-    xmlhttp.open("GET","getuser.php?q="+str,true);
+    xmlhttp.open("GET","getcountry.php?q="+str,true);
     xmlhttp.send();
   }
 }
@@ -99,12 +68,11 @@ function showUser(str) {
 <form>
 <select name="users" onchange="showUser(this.value)">
   <option value="">Select a person:</option>
-  <option value="de">Peter Griffin</option>
-  <option value="cz">Lois Griffin</option>
-  <option value="fr">Joseph Swanson</option>
-  <option value="gb">Glenn Quagmire</option>
+  <option value="de">de</option>
+  <option value="cz">cz</option>
+  <option value="fr">fr</option>
+  <option value="gb">gb</option>
   </select>
 </form>
 <div id="txtHint"><b>Person info will be listed here...</b></div>
 </html>
->>>>>>> 7fb11e0 (basic API test implementation)
