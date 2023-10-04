@@ -22,17 +22,14 @@ if ($mysqli->select_db('services_db') === false) {
         echo "Error creating database: " . $mysqli->error;
     }
 }
-else{
-        $sql = "CREATE TABLE IF NOT EXISTS services (
-                    Ref varchar(10) NOT NULL PRIMARY KEY,
-                    Centre varchar(255) NOT NULL,
-                    Service varchar(255) NOT NULL,
-                    Country varchar(2) NOT NULL
-                );";
-        if ($mysqli->query($sql) === TRUE) {
-            echo "Table created successfully";
-        }
-    echo "database already exists";
+$sql = "CREATE TABLE IF NOT EXISTS services (
+            Ref varchar(10) NOT NULL PRIMARY KEY,
+            Centre varchar(255) NOT NULL,
+            Service varchar(255) NOT NULL,
+            Country varchar(2) NOT NULL
+    );";
+if ($mysqli->query($sql) === TRUE) {
+    echo "Table created successfully";
 }
 
 
@@ -74,5 +71,5 @@ function showUser(str) {
   <option value="gb">gb</option>
   </select>
 </form>
-<div id="txtHint"><b>Person info will be listed here...</b></div>
+<div id="txtHint"><b>Info will be listed here...</b></div>
 </html>
