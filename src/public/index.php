@@ -22,6 +22,8 @@ $sql = "CREATE TABLE IF NOT EXISTS services (
     Country char(2) NOT NULL
 );";
 
+$db->prepare($sql)->execute();
+
 // Add all data from services.csv to database if not already in database
 
 if(($handle = fopen("services.csv", "r")) !== FALSE) {
@@ -34,7 +36,7 @@ if(($handle = fopen("services.csv", "r")) !== FALSE) {
             $stmt->execute();
             
             if($stmt->rowCount() == 0){
-                $db->prepare('INSERT INTO services_2 VALUES ("'.$row[0].'","'.$row[1].'", "'.$row[2].'","'.$row[3].'")')->execute();
+                $db->prepare('INSERT INTO services VALUES ("'.$row[0].'","'.$row[1].'", "'.$row[2].'","'.$row[3].'")')->execute();
             }
         }
         $n += 1;
