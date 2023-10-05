@@ -2,7 +2,7 @@
 
 1. go to /docker
 2. run `docker-compose up --build -d`
-3. go to `localhost:8000`
+3. go to `localhost:8000` in a browser window
   - This will populate the database and necessary table
 4. Access API
   - API documentation can be viewed in API.md
