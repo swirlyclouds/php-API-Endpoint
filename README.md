@@ -1,4 +1,4 @@
-# InstructPHP Test API
+# Instruct PHP Developer Code Challenge (v1.0) API
 
 ## GET | Get Services From Country Code
 
