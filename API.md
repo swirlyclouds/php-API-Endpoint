@@ -1,4 +1,4 @@
-# Instruct PHP Developer Code Challenge (v1.0) API
+# API
 
 ## GET | Get Services From Country Code
 
